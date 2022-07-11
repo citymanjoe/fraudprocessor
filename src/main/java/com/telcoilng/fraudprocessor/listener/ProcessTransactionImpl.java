@@ -56,6 +56,7 @@ public class ProcessTransactionImpl implements ProcessTransaction {
 
     @Override
     public Context processTransaction(ISOMsg msg, Context context) {
+        log.info("Transaction Processing with context");
         try {
             ISOMsg response = (ISOMsg) msg.clone();
             Terminals terminals = context.get("TERMINAL");

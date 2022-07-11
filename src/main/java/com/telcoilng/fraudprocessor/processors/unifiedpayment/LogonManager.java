@@ -139,6 +139,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
+        log.info("To Create ISO message for unified Payment");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
         m.set(7, ISODate.getDateTime(new Date()));

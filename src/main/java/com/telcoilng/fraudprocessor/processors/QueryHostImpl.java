@@ -21,6 +21,7 @@ public class QueryHostImpl implements QueryHost {
 
     @Override
     public Context queryHost(Context context) {
+        log.info("QUERY HOST: {}", context.get("REQUEST").toString());
         ISOMsg request = context.get("REQUEST");
 
         try {

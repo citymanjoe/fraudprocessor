@@ -18,6 +18,7 @@
 
 package com.telcoilng.fraudprocessor.processors.interswitch.logonManager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 import org.jpos.core.Configuration;
@@ -35,6 +36,7 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public class LogonManager extends QBeanSupport implements Runnable {
     Space sp;
     Space psp;
@@ -139,6 +141,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
+        log.info("To CREATE ISO Message");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
         m.set(7, ISODate.getDateTime(new Date()));

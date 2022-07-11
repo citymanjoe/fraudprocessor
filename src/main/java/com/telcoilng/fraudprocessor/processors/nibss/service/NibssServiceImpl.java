@@ -25,7 +25,9 @@ import java.util.*;
 import static com.telcoilng.fraudprocessor.utils.EncryptionUtil.generateHash256Value;
 import static com.telcoilng.fraudprocessor.utils.EncryptionUtil.hexStringToByteArray;
 
-@Service @Slf4j @RequiredArgsConstructor
+@Service
+@Slf4j
+@RequiredArgsConstructor
 public class NibssServiceImpl implements NibssService {
     @Value("${nibssHostIp}")
     String nibssHostIp;

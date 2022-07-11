@@ -61,7 +61,7 @@ public class ISOIncomingListener extends Log implements ISORequestListener, Tran
 
     @Override
     public boolean process(ISOSource source, ISOMsg m) {
-        info("ISO transaction request:");
+        log.info("ISO transaction request:");
         try {
             Context transactionContext = new Context();
             Terminals terminals;
