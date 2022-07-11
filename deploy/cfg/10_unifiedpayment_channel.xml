@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<channel-adaptor logger="Q2" name="unifiedpayment-channel" realm="unifiedpayment-channel">
+  <space>unifiedpayment</space>
+  <in>unifiedpayment.in</in>
+  <out>unifiedpayment.out</out>
+  <keep-alive>true</keep-alive>
+  <channel class="org.jpos.iso.channel.PostChannel" logger="Q2"
+           realm="unifiedpayment-channel"
+           packager="org.jpos.iso.packager.GenericPackager">
+
+     <property name="packager-config" value="postpack.xml" />
+     <property name="packager-logger" value="Q2" />
+     <property name="packager-realm" value="unifiedpayment-channel-packager"/>
+     <property name="host" value="196.46.20.30"/>
+     <property name="port" value="3346" />
+     <property name="timeout" value="900000" />
+
+     <filter class="com.telcoilng.fraudprocessor.processors.unifiedpayment.PostOutgoing" direction="outgoing" />
+
+  </channel>
+  <timeout>60000</timeout>
+</channel-adaptor>
+
+
+

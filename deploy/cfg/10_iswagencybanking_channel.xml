@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<channel-adaptor logger="Q2" name="iswagencybanking-channel" realm="iswagencybanking-channel">
+  <space>iswagencybanking</space>
+  <in>iswagencybanking.in</in>
+  <out>iswagencybanking.out</out>
+  <keep-alive>true</keep-alive>
+  <channel class="org.jpos.iso.channel.PostChannel" logger="Q2"
+           realm="isw-channel"
+           packager="com.telcoilng.fraudprocessor.processors.interswitch.packager.PostBridgePackager">
+
+     <property name="packager-config" value="postpack.xml" />
+     <property name="packager-logger" value="Q2" />
+     <property name="packager-realm" value="isw-channel-packager"/>     
+     <property name="host" value="127.0.0.1" />
+     <property name="port" value="8999" />
+     <property name="timeout" value="300000" /> 
+
+     <filter class="com.telcoilng.fraudprocessor.processors.interswitch.filter.PostIncoming" direction="incoming" />
+     <filter class="com.telcoilng.fraudprocessor.processors.interswitch.filter.PostOutgoing" direction="outgoing" />
+
+  </channel>
+  <timeout>60000</timeout>
+</channel-adaptor>

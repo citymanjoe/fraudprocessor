@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<logon-manager class="com.telcoilng.fraudprocessor.processors.unifiedpayment.LogonManager" logger="Q2" name="unifiedpayment-logon-manager" realm="unifiedpayment-logon-manager">
+	<property name="space" value="unifiedpayment" />
+	<property name="mux" value="unifiedpayment" />
+	<property name="timeout" value="30000" />
+	<property name="echo-interval" value="120000" />
+	<property name="logon-interval" value="3600000" />
+	<property name="channel-ready" value="unifiedpayment-channel.ready" />
+</logon-manager>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<mux class="org.jpos.q2.iso.QMUX" logger="Q2" name="iswagencybanking" realm="isw-mux">
+
+  <space>iswagencybanking</space>
+
+  <in>iswagencybanking.out</in>
+  <out>iswagencybanking.in</out>
+  <ready>iswagencybanking-channel.ready</ready>
+
+  <request-listener logger="Q2" class="com.telcoilng.fraudprocessor.processors.interswitch.listeners.RequestListener"
+    name="iswagencybanking-listener" realm="iswagencybanking-listener" />
+
+</mux>

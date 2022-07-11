@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<mux class="org.jpos.q2.iso.QMUX" logger="Q2" name="unifiedpayment" realm="unifiedpayment-mux">
+
+  <space>unifiedpayment</space>
+
+  <in>unifiedpayment.out</in>
+  <out>unifiedpayment.in</out>
+  <ready>unifiedpayment-channel.ready</ready>
+
+  <request-listener logger="Q2" class="com.telcoilng.fraudprocessor.processors.unifiedpayment.RequestListener"
+    name="unifiedpayment-listener" realm="unifiedpayment-listener" />
+
+</mux>
