@@ -1,0 +1,25 @@
+<channel-adaptor name='smartvista-channel'
+                 class="org.jpos.q2.iso.ChannelAdaptor" logger="Q2" realm="smartvista-channel">
+    <channel class="org.jpos.iso.channel.PostChannel" logger="Q2" realm="smartvista-channel"
+             packager="org.jpos.iso.packager.GenericPackager">
+        <property name="packager-config" value="postpack.xml" />
+        <property name="packager-logger" value="Q2" />
+        <property name="packager-realm" value="smartvista-channel-packager"/>
+
+        <property name="host" value="127.0.0.1" />
+        <property name="port" value="2223" />
+        
+        <!--  <property name="host" value="10.2.249.6" />
+        <property name="port" value="2223" /> -->
+        
+        <property name="timeout" value="1000000" />
+        <property name="keep-alive" value="true" />
+        <filter class="com.telcoilng.fraudprocessor.processors.smartvista.PostIncoming" direction="incoming" />
+        <filter class="com.telcoilng.fraudprocessor.processors.smartvista.PostOutgoing" direction="outgoing" />
+    </channel>
+    <space>smartvista</space>
+    <in>ismartvista.in</in>
+    <out>smartvista.out</out>
+    <keep-alive>true</keep-alive>
+    <timeout>60000</timeout>
+</channel-adaptor>

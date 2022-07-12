@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<!-- <mux class="org.jpos.q2.iso.QMUX" logger="Q2" name="qserver-mux"> -->
+<!-- <in>NETWORK_OUT</in> -->
+<!-- <out>NETWORK_IN</out> -->
+<!-- <key>11</key> -->
+<!-- <unhandled>unhandled</unhandled> -->
+<!-- </mux> -->
+
+<mux class="org.jpos.q2.iso.QMUX" logger="Q2"
+     name="smartvista" realm="smartvista-mux">
+    <space>smartvista</space>
+    <in>smartvista.out</in>
+    <out>smartvista.in</out>
+    <ready>smartvista-channel.ready</ready>
+    <!--<key>11, 37, 41, 42 </key>
+    <unhandled>smartvista-mux.unhandled</unhandled> -->
+    <request-listener logger="Q2" class="com.telcoilng.fraudprocessor.processors.smartvista.RequestListener"
+                      name="smartvista-listener" realm="smartvista-listener" />
+</mux>

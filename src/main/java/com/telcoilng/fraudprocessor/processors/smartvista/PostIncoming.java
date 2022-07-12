@@ -1,6 +1,5 @@
-package com.telcoilng.fraudprocessor.processors.interswitch.filter;
+package com.telcoilng.fraudprocessor.processors.smartvista;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jpos.iso.*;
 import org.jpos.space.Space;
 import org.jpos.space.SpaceFactory;
@@ -16,7 +15,6 @@ import java.util.StringTokenizer;
  * Based on PostBridge 8 specification, as of 2017
  */
 @SuppressWarnings("unused")
-@Slf4j
 public class PostIncoming implements ISOFilter {
 
     private static final long FIVE_MINUTES = 5*60*1000L;
@@ -123,7 +121,6 @@ public class PostIncoming implements ISOFilter {
                     currency = "840";
 
                 Currency c = ISOCurrency.getCurrency(currency);
-                log.info("Currency Name: " + c.getAlphaCode());
                 amnt.setValue(currency + Integer.toString(c.getDecimals()) + message.getString(4));
                 m.set(amnt);
 

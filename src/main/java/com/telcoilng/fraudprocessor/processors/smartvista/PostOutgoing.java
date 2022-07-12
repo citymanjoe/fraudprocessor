@@ -1,6 +1,5 @@
-package com.telcoilng.fraudprocessor.processors.interswitch.filter;
+package com.telcoilng.fraudprocessor.processors.smartvista;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jpos.iso.*;
 import org.jpos.tlv.TLVList;
 import org.jpos.util.LogEvent;
@@ -13,7 +12,6 @@ import java.util.Date;
  * Converts the outgoing ISOMsg from internal jPOS-CMF specs to Postilion specs.
  */
 @SuppressWarnings("unused")
-@Slf4j
 public class PostOutgoing implements ISOFilter {
 
     @Override
@@ -36,18 +34,9 @@ public class PostOutgoing implements ISOFilter {
             r.set(11, stan);
 
             if (message.hasField(4)) {
-                log.info("AMOUNT VALUE: "+ r.getString(4));
-                //ISOAmount amount = (ISOAmount) message.getComponent(4);
-                ISOAmount amount = new ISOAmount(4);
-                String currency = message.getString(49);
-                if (currency == null)
-                    currency = "840";
 
-                Currency c = ISOCurrency.getCurrency(currency);
-                log.info("Currency Name: " + c.getAlphaCode());
-                amount.setValue(currency + Integer.toString(c.getDecimals()) + message.getString(4));
-                r.set(amount);
-                log.info("AMOUNT COST: "+ amount.getAmountAsLegacyString());
+                ISOAmount amount = (ISOAmount) message.getComponent(4);
+
                 r.set(4, amount.getAmountAsLegacyString());
                 r.set(49, amount.getCurrencyCodeAsString());
             }
@@ -95,7 +84,7 @@ public class PostOutgoing implements ISOFilter {
             if (message.hasField(41) && message.getString(41).length() > 8)
                 r.set(41, message.getString(41).substring(0, 8));
 
-           /* if (message.hasField(43)) {
+            if (message.hasField(43)) {
                 ISOMsg subfields = (ISOMsg) message.getComponent(43);
                 String f43 = ISOUtil.padright(subfields.getString(2), 23, ' ')
                         + ISOUtil.padright(subfields.getString(4), 13, ' ')
@@ -103,7 +92,7 @@ public class PostOutgoing implements ISOFilter {
                         + ISOUtil.padright(subfields.getString(7), 2, ' ');
 
                 r.set(43, f43);
-            }*/
+            }
 
             if (message.hasField(13)) {
                 Date d = ISODate.parseISODate(message.getString(7));

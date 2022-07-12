@@ -39,6 +39,7 @@ public class NibssServiceImpl implements NibssService {
     @SneakyThrows
     @Override
     public Context toNibss(Context context) {
+        log.info("FROM NIBSS SERVICE");
         ISOMsg req = context.get("REQUEST");
 
         try {

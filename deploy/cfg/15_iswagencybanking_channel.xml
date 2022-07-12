@@ -6,7 +6,7 @@
   <keep-alive>true</keep-alive>
   <channel class="org.jpos.iso.channel.PostChannel" logger="Q2"
            realm="isw-channel"
-           packager="com.telcoilng.fraudprocessor.processors.interswitch.packager.PostBridgePackager">
+           packager="org.jpos.iso.packager.GenericPackager">
 
      <property name="packager-config" value="postpack.xml" />
      <property name="packager-logger" value="Q2" />

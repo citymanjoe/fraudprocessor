@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<logon-manager class="com.telcoilng.fraudprocessor.processors.smartvista.LogonManager" logger="Q2" name="smartvista-logon-manager" realm="smartvista-logon-manager">
+    <property name="space" value="smartvista" />
+    <property name="mux" value="smartvista" />
+    <property name="timeout" value="30000" />
+    <property name="echo-interval" value="120000" />
+    <property name="logon-interval" value="3600000" />
+    <property name="channel-ready" value="smartvista-channel.ready" />
+</logon-manager>

@@ -97,4 +97,30 @@ public class MessageValidatorImpl implements MessageValidator {
         //todo perform terminal id/merchant/client validation
         //todo perform transactioin exists validation
     }
+
+    @Override
+    public Function<ISOMsg, Boolean> _1100Validator() {
+        int[] mandatory = {2,3,4,7,11,12,22,41};
+        int[] optional = {2,13,14,17,18,20,24,23,25,26,28,32,33,35,36,37,38,40,41,42,43,45,46,49,52,55,56,59,60,63,90,95,99,111,112,122,123,128};
+
+        return isoMsg -> {
+            for (int fields:mandatory){
+                if (!isoMsg.hasField(fields)){
+                    System.out.println("Mandatory field missing for transaction :: field "+fields);
+                    return false;
+                }
+            }
+
+            for (int field:optional){
+                if (!isoMsg.hasField(field)){
+                    System.out.println("Optional Field not present for transaction :: field "+field);
+                }
+            }
+            return true;
+        };
+
+        //todo perform terminal id/merchant/client validation
+        //todo perform transactioin exists validation
+    }
+
 }

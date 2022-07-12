@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<logon-manager class="com.telcoilng.fraudprocessor.processors.interswitch.logonManager.LogonManager" logger="Q2" name="interswitch-logon-manager" realm="interswitch-logon-manager">
+    <property name="space" value="iswagencybanking" />
+    <property name="mux" value="iswagencybanking" />
+    <property name="timeout" value="30000" />
+    <property name="echo-interval" value="120000" />
+    <property name="logon-interval" value="3600000" />
+    <property name="channel-ready" value="iswagencybanking-channel.ready" />
+</logon-manager>

@@ -42,6 +42,7 @@ public class Server implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        log.info("To Start Servers Using Q2");
         logger.addListener(new SimpleLogListener(System.out));
         //system monitor here
         new SystemMonitor(600000, logger, "system-monitor");
@@ -70,7 +71,7 @@ public class Server implements CommandLineRunner {
         server.setConfiguration(configuration);
         server.addISORequestListener(incomingListener);
 //        server.setSocketFactory(sslSocketFactory);
-
+        log.info("To PreStart Server Configuration: " + server.getName());
         log.info("===============*Starting server*===============");
         log.info("===============*Port "+port+" *===============");
         new Thread (server).start ();

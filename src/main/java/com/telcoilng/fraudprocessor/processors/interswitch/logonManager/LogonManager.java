@@ -73,6 +73,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
     public void startService () {
         try {
             mux  = (MUX) NameRegistrar.get ("mux." + cfg.get ("mux"));
+            log.info("MUX SMV: " + mux.toString());
         } catch (NameRegistrar.NotFoundException e) {
             getLog().warn (e);
         }
@@ -141,14 +142,36 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
-        log.info("To CREATE ISO Message");
+        log.info("To Create ISO Message for ISW");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
-        ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
+        ISOMsg m = new ISOMsg("1100");                                // use CMF specs for MTI
+        m.set(2, "50022361608521");
+        m.set(3, "392030");
+        //String amount = String.format("%12s","75000100").replace(' ', '0');
+        m.set(4, "000075000100");
+        m.set(7, ISODate.getDateTime(new Date()));
+        m.set(11, ISOUtil.zeropad (Long.toString(traceNumber), 6));   // we can leave STAN with 6 figures
+        m.set(12, ISODate.getTime(now));
+        //m.set(12, "220708103307");
+        //m.set(13, ISODate.getDate(now));
+        m.set(14, "1611");
+        m.set(18, "5999");
+        m.set(19, "643");
+        m.set(22, "211101212241");
+        m.set(32, "11111111111");
+        m.set(37, "369451679373");
+        m.set(42, "122222222222234");
+        m.set(43, "ALOHAmerchant>Street>City>RF>RUS>200001");
+        m.set(48, "[2: [774], 4: [000], 12: [31], 15: [30, 30]]");
+        m.set(49, "818");
+        m.set(62, "[1: [31, 31, 31, 32, 31, 30, 30, 30, 30], 2: [31], 3: [31, 31, 31, 31, 31, 31], 4: [31, 31, 31], 5: [31, 31, 31], 6: [31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31], 9: [31, 31, 31], 10: [1201]]");
+        m.set(70, msgType);
+        /*ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
         m.set(7, ISODate.getDateTime(new Date()));
         m.set(11, ISOUtil.zeropad (Long.toString(traceNumber), 6));   // we can leave STAN with 6 figures
         m.set(12, ISODate.getTime(now));
         m.set(13, ISODate.getDate(now));
-        m.set(70, msgType);
+        m.set(70, msgType);*/
         if (merge != null)
             m.merge (merge);
         return m;

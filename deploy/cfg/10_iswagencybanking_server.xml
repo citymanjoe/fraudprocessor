@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server class="org.jpos.q2.iso.QServer" logger="Q2"
+        name="iswagencybanking_Server">
+
+    <attr name="port" type="java.lang.Integer">8999</attr>
+    <attr name="maxSessions" type="java.lang.Integer">500</attr>
+    <attr name="minSessions" type="java.lang.Integer">150</attr>
+
+    <channel name="iswagencybankingChannel" class="org.jpos.iso.channel.PostChannel"
+             logger="Q2" packager="org.jpos.iso.packager.GenericPackager">
+        <property name="packager-config" value="postpack.xml" />
+    </channel>
+
+
+    <request-listener
+            class="com.telcoilng.fraudprocessor.processors.interswitch.listeners.RequestListener" logger="Q2">
+        <property name="space" value="transient:default" />
+        <property name="queue" value="TransactionQueue" />
+        <property name="timeout" value="10000" />
+    </request-listener>
+</server>

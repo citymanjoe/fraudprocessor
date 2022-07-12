@@ -21,6 +21,7 @@ public class ProcessorStartupData implements CommandLineRunner {
     private final RoutingRuleRepository routingRuleRepository;
     @Override
     public void run(String... args) throws Exception {
+        log.info("To Start Processors for Transactions");
         if (stationRepository.findById(1L).isPresent()){
             log.info("Stations already exist");
         }

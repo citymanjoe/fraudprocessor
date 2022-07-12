@@ -86,6 +86,11 @@
       name="MERCHANTS TYPE"
       class="org.jpos.iso.IFA_NUMERIC"/>
   <isofield
+          id="19"
+          length="3"
+          name="COUNTRY CODE,ACQUIRING INSTITUTION"
+          class="org.jpos.iso.IFA_NUMERIC"/>
+  <isofield
       id="22"
       length="3"
       name="POINT OF SERVICE ENTRY MODE"

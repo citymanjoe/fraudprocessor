@@ -16,4 +16,6 @@ public interface MessageValidator{
 
     Function<ISOMsg,Boolean> _0420Validator();
 
+    Function<ISOMsg,Boolean> _1100Validator();
+
 }

@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.telcoilng.fraudprocessor.processors.unifiedpayment;
+package com.telcoilng.fraudprocessor.processors.smartvista;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jdom2.Element;
 import org.jdom2.output.XMLOutputter;
 import org.jpos.core.Configuration;
@@ -35,6 +36,7 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 
 @SuppressWarnings("unchecked")
+@Slf4j
 public class LogonManager extends QBeanSupport implements Runnable {
     Space sp;
     Space psp;
@@ -48,14 +50,13 @@ public class LogonManager extends QBeanSupport implements Runnable {
     ISOMsg logoffMsg;
     ISOMsg echoMsg;
     Date now = new Date();
-    public static final String TRACE = "UNIFIEDPAYMENT_TRACE";
-    public static final String LOGON = "UNIFIEDPAYMENT_LOGON.";
-    public static final String ECHO  = "UNIFIEDPAYMENT_ECHO.";
-    public static final String FDR_KEY = "UNIFIEDPAYMENT_KEY";
+    public static final String TRACE = "SMV_TRACE";
+    public static final String LOGON = "SMV_LOGON.";
+    public static final String ECHO  = "SMV_ECHO.";
+    public static final String FDR_KEY = "SMV_KEY";
     private boolean isSignOn = false;
 
     public void initService () throws ConfigurationException {
-        log.info("Initial unified Payment");
         Configuration cfg = getConfiguration();
         sp       = SpaceFactory.getSpace (cfg.get ("space", ""));
         psp      = SpaceFactory.getSpace (cfg.get ("persistent-space", ""));
@@ -70,16 +71,15 @@ public class LogonManager extends QBeanSupport implements Runnable {
         echoMsg       =  getMsg ("echo", config);
     }
     public void startService () {
-        log.info("Start Service for unified Payment");
         try {
             mux  = (MUX) NameRegistrar.get ("mux." + cfg.get ("mux"));
+            log.info("MUX Register: " + mux.toString());
         } catch (NameRegistrar.NotFoundException e) {
             getLog().warn (e);
         }
         new Thread (this).start();
     }
     public void run () {
-        log.info("Run for unified Payment");
         while (running()) {
             Object sessionId = sp.rd (readyKey, 60000);
             if (sessionId == null) {
@@ -89,12 +89,12 @@ public class LogonManager extends QBeanSupport implements Runnable {
             try {
                 if (!sessionId.equals (sp.rdp (LOGON+readyKey))) {
                     if (!isSignOn){
-                        doSignOn();
+                        doLogon (sessionId);
                         isSignOn = true;
                     }
                     doEcho();
-//                    doLogon (sessionId);
-                    Thread.sleep (initialDelay);
+
+                    Thread.sleep (10000);
                 } else if (sp.rdp (ECHO+readyKey) == null) {
                     doEcho ();
                 }
@@ -105,7 +105,6 @@ public class LogonManager extends QBeanSupport implements Runnable {
         }
     }
     public void stopService() {
-        log.info("Stop Service for unified Payment");
         try {
             doLogoff();
         } catch (Throwable t) {
@@ -114,13 +113,11 @@ public class LogonManager extends QBeanSupport implements Runnable {
     }
 
     public void doSignOn() throws ISOException{
-        log.info("Do Signon for unified Payment");
         SpaceUtil.wipe (sp, LOGON+readyKey);
-        mux.request (createMsg ("001", logoffMsg), 1000);
+        mux.request (createMsg ("101", logoffMsg), 1000);
     }
 
     private void doLogon (Object sessionId) throws ISOException {
-        log.info("Do Logon for unified Payment");
         ISOMsg resp = mux.request (createMsg ("001", logonMsg), timeout);
         if (resp != null && "0000".equals (resp.getString(39))) {   // RC will come in CMF, hence 0000
             SpaceUtil.wipe (sp, LOGON+readyKey);
@@ -132,13 +129,11 @@ public class LogonManager extends QBeanSupport implements Runnable {
     }
 
     private void doLogoff () throws ISOException {
-        log.info("Do Logoff for unified Payment");
         SpaceUtil.wipe (sp, LOGON+readyKey);
         mux.request (createMsg ("002", logoffMsg), 1000);
     }
 
     private void doEcho () throws ISOException {
-        log.info("Do Echo for unified Payment");
         ISOMsg resp = mux.request (createMsg ("301", echoMsg), timeout);
         if (resp != null) {
             sp.out (ECHO+readyKey, new Object(), echoInterval);
@@ -147,7 +142,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
-        log.info("To Create ISO message for unified Payment");
+        log.info("TO CREATE ISO MESSAGE FOR SMART-VISTA");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
         m.set(7, ISODate.getDateTime(new Date()));
@@ -157,13 +152,13 @@ public class LogonManager extends QBeanSupport implements Runnable {
         m.set(70, msgType);
         if (merge != null)
             m.merge (merge);
+        log.info("ISO MESSAGE FOR SMART-VISTA: {}", m.isRequest());
         return m;
     }
 
     // Gets isomsg chunk for each type of network message: logonMsg, logoffMsg. echoMsg
     private ISOMsg getMsg (String name, Element config) throws ConfigurationException
     {
-        log.info("Get Message for unified Payment");
         ISOMsg m = new ISOMsg();
         Element e = config.getChild (name);
         if (e != null)

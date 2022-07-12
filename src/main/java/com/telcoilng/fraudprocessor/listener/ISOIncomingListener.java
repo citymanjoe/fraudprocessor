@@ -123,6 +123,18 @@ public class ISOIncomingListener extends Log implements ISORequestListener, Tran
                     else
                         log.info(VALIDATION_FAILED);
                     break;
+                case _1100:
+                    if (Boolean.TRUE.equals(validator._1100Validator().apply(m))){
+                        transaction = logTransaction.getOriginal(m);
+
+                        transactionContext.put("TRANSACTION",transaction);
+                        Context result = processTransaction.processTransaction(m, transactionContext);
+                        response = result.get("RESPONSE");
+                        logTransaction.updateTransaction.apply(transactionContext,response);
+                    }
+                    else
+                        log.info(VALIDATION_FAILED);
+                    break;
                 case _0800:
                     if (Boolean.TRUE.equals(validator._0800Validator().apply(m))){
                         response = keyExchange.doKeyExchange(m,transactionContext);
