@@ -73,7 +73,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
     public void startService () {
         try {
             mux  = (MUX) NameRegistrar.get ("mux." + cfg.get ("mux"));
-            log.info("MUX SMV: " + mux.toString());
+            log.info("MUX ISW: " + mux.toString());
         } catch (NameRegistrar.NotFoundException e) {
             getLog().warn (e);
         }
@@ -142,9 +142,9 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
-        log.info("To Create ISO Message for ISW");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("1100");                                // use CMF specs for MTI
+        log.info("To Create ISO Message for ISW: "+ m.getMTI() + "|" + m.getString(0));
         m.set(2, "50022361608521");
         m.set(3, "392030");
         //String amount = String.format("%12s","75000100").replace(' ', '0');

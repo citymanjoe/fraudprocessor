@@ -1,15 +1,17 @@
 package com.telcoilng.fraudprocessor.processors.smartvista;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jpos.iso.ISOMsg;
 import org.jpos.iso.ISORequestListener;
 import org.jpos.iso.ISOSource;
 import org.jpos.util.Log;
 
+@Slf4j
 public class RequestListener extends Log implements ISORequestListener {
 
     @Override
     public boolean process(ISOSource source, ISOMsg reqMsg) {
-
+         log.info("REQUEST LISTENER SMV");
         try {
 
             if (reqMsg.isResponse())

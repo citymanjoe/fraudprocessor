@@ -70,7 +70,6 @@ public class LogonManager extends QBeanSupport implements Runnable {
         echoMsg       =  getMsg ("echo", config);
     }
     public void startService () {
-        log.info("Start Service for unified Payment");
         try {
             mux  = (MUX) NameRegistrar.get ("mux." + cfg.get ("mux"));
         } catch (NameRegistrar.NotFoundException e) {
@@ -79,7 +78,6 @@ public class LogonManager extends QBeanSupport implements Runnable {
         new Thread (this).start();
     }
     public void run () {
-        log.info("Run for unified Payment");
         while (running()) {
             Object sessionId = sp.rd (readyKey, 60000);
             if (sessionId == null) {
@@ -105,7 +103,6 @@ public class LogonManager extends QBeanSupport implements Runnable {
         }
     }
     public void stopService() {
-        log.info("Stop Service for unified Payment");
         try {
             doLogoff();
         } catch (Throwable t) {
@@ -114,13 +111,11 @@ public class LogonManager extends QBeanSupport implements Runnable {
     }
 
     public void doSignOn() throws ISOException{
-        log.info("Do Signon for unified Payment");
         SpaceUtil.wipe (sp, LOGON+readyKey);
         mux.request (createMsg ("001", logoffMsg), 1000);
     }
 
     private void doLogon (Object sessionId) throws ISOException {
-        log.info("Do Logon for unified Payment");
         ISOMsg resp = mux.request (createMsg ("001", logonMsg), timeout);
         if (resp != null && "0000".equals (resp.getString(39))) {   // RC will come in CMF, hence 0000
             SpaceUtil.wipe (sp, LOGON+readyKey);
@@ -132,13 +127,11 @@ public class LogonManager extends QBeanSupport implements Runnable {
     }
 
     private void doLogoff () throws ISOException {
-        log.info("Do Logoff for unified Payment");
         SpaceUtil.wipe (sp, LOGON+readyKey);
         mux.request (createMsg ("002", logoffMsg), 1000);
     }
 
     private void doEcho () throws ISOException {
-        log.info("Do Echo for unified Payment");
         ISOMsg resp = mux.request (createMsg ("301", echoMsg), timeout);
         if (resp != null) {
             sp.out (ECHO+readyKey, new Object(), echoInterval);
@@ -147,9 +140,9 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
-        log.info("To Create ISO message for unified Payment");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
+        log.info("To Create ISO message for unified Payment: "+ m.getMTI() + "|" + m.getString(0));
         m.set(7, ISODate.getDateTime(new Date()));
         m.set(11, ISOUtil.zeropad (Long.toString(traceNumber), 6));   // we can leave STAN with 6 figures
         m.set(12, ISODate.getTime(now));

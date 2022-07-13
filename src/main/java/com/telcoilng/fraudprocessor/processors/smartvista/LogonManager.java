@@ -142,9 +142,9 @@ public class LogonManager extends QBeanSupport implements Runnable {
 
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
-        log.info("TO CREATE ISO MESSAGE FOR SMART-VISTA");
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
+        log.info("TO CREATE ISO MESSAGE FOR SMART-VISTA: " + m.getMTI() + "|" + m.getString(0));
         m.set(7, ISODate.getDateTime(new Date()));
         m.set(11, ISOUtil.zeropad (Long.toString(traceNumber), 6));   // we can leave STAN with 6 figures
         m.set(12, ISODate.getTime(now));

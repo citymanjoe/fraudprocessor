@@ -26,6 +26,7 @@ public class PostIncoming implements ISOFilter {
     static {
         // jPOS-CMF and Postilion use the same account-types in PCODE
         // There's no need to consider them in this mapping
+        map.put("1100.30", "1110.30");          //pre-authorisation
         map.put ("0100.30", "2100.30");           // Available balance inquiry
         map.put ("0100.31", "2100.31");           // Balance inquiry
         map.put ("0100.00", "2100.00");           // Authorization

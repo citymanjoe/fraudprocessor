@@ -1,5 +1,6 @@
 package com.telcoilng.fraudprocessor.processors.smartvista;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jpos.iso.*;
 import org.jpos.space.Space;
 import org.jpos.space.SpaceFactory;
@@ -15,6 +16,7 @@ import java.util.StringTokenizer;
  * Based on PostBridge 8 specification, as of 2017
  */
 @SuppressWarnings("unused")
+@Slf4j
 public class PostIncoming implements ISOFilter {
 
     private static final long FIVE_MINUTES = 5*60*1000L;
@@ -24,11 +26,11 @@ public class PostIncoming implements ISOFilter {
     static {
         // jPOS-CMF and Postilion use the same account-types in PCODE
         // There's no need to consider them in this mapping
-        map.put ("0100.30", "2100.30");           // Available balance inquiry
-        map.put ("0100.31", "2100.31");           // Balance inquiry
-        map.put ("0100.00", "2100.00");           // Authorization
-        map.put ("0100.60", "2100.60");           // Authorization
-        map.put ("0200.00", "2200.00");           // Purchase
+        map.put ("0110.30", "2100.30");           // Available balance inquiry
+        map.put ("0110.31", "2100.31");           // Balance inquiry
+        map.put ("0110.00", "2100.00");           // Authorization
+        map.put ("0110.60", "2100.60");           // Authorization
+        map.put ("0210.00", "2200.00");           // Purchase
 
         map.put ("0420.00", "2420.00");           // Purchase/auth Reversal
         map.put ("0420.01", "2420.01");           // Cash Withdrawal Reversal
@@ -69,7 +71,7 @@ public class PostIncoming implements ISOFilter {
     }
 
     private void mapMtiAndPCode (String mti, String pcode, ISOMsg m) throws ISOException {
-
+        log.info("INCOMING FOR SMV");
         if (pcode != null && pcode.length() >= 6) {
 
             String txType =    pcode.substring(0, 2);
