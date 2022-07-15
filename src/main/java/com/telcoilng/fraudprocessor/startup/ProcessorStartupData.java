@@ -46,6 +46,12 @@ public class ProcessorStartupData implements CommandLineRunner {
             station3.setZpk("DBEECACCB4210977ACE73A1D873CA59F".toUpperCase());
             stationRepository.save(station3);
 
+            Station station4 = new Station();
+            station4.setStatus("ACTIVE");
+            station4.setName("smartVista");
+            station4.setZpk("DBEECACCB4210922ACE73A1D873CA59F".toUpperCase());
+            stationRepository.save(station4);
+
 
             Scheme scheme = new Scheme();
             scheme.setName("MasterCard");

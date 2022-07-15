@@ -26,6 +26,7 @@ import org.jpos.core.ConfigurationException;
 import org.jpos.iso.*;
 import org.jpos.iso.packager.XMLPackager;
 import org.jpos.q2.QBeanSupport;
+import org.jpos.q2.iso.QMUX;
 import org.jpos.space.Space;
 import org.jpos.space.SpaceFactory;
 import org.jpos.space.SpaceUtil;
@@ -73,7 +74,8 @@ public class LogonManager extends QBeanSupport implements Runnable {
     public void startService () {
         try {
             mux  = (MUX) NameRegistrar.get ("mux." + cfg.get ("mux"));
-            log.info("MUX Register: " + mux.toString());
+            String actualValue = ((QMUX) mux).getName();
+            log.info("MUX SMV: " + actualValue);
         } catch (NameRegistrar.NotFoundException e) {
             getLog().warn (e);
         }
@@ -143,7 +145,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
     private ISOMsg createMsg (String msgType, ISOMsg merge) throws ISOException
     {
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
-        ISOMsg m = new ISOMsg("0800");                                // use CMF specs for MTI
+        ISOMsg m = new ISOMsg("0600");                                // use CMF specs for MTI
         log.info("TO CREATE ISO MESSAGE FOR SMART-VISTA: " + m.getMTI() + "|" + m.getString(0));
         m.set(7, ISODate.getDateTime(new Date()));
         m.set(11, ISOUtil.zeropad (Long.toString(traceNumber), 6));   // we can leave STAN with 6 figures

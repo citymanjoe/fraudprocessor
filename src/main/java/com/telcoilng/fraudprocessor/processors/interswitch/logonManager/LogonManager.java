@@ -26,6 +26,7 @@ import org.jpos.core.ConfigurationException;
 import org.jpos.iso.*;
 import org.jpos.iso.packager.XMLPackager;
 import org.jpos.q2.QBeanSupport;
+import org.jpos.q2.iso.QMUX;
 import org.jpos.space.Space;
 import org.jpos.space.SpaceFactory;
 import org.jpos.space.SpaceUtil;
@@ -70,10 +71,12 @@ public class LogonManager extends QBeanSupport implements Runnable {
         logoffMsg     =  getMsg ("logoff", config);
         echoMsg       =  getMsg ("echo", config);
     }
+    //https://stackoverflow.com/questions/48393487/multiple-iso8583-request-parallel-on-a-jpos-mux
     public void startService () {
         try {
             mux  = (MUX) NameRegistrar.get ("mux." + cfg.get ("mux"));
-            log.info("MUX ISW: " + mux.toString());
+            String actualValue = ((QMUX) mux).getName();
+            log.info("MUX ISW: " + actualValue);
         } catch (NameRegistrar.NotFoundException e) {
             getLog().warn (e);
         }
@@ -144,7 +147,7 @@ public class LogonManager extends QBeanSupport implements Runnable {
     {
         long traceNumber = SpaceUtil.nextLong (psp, TRACE) % 1000000;
         ISOMsg m = new ISOMsg("1100");                                // use CMF specs for MTI
-        log.info("To Create ISO Message for ISW: "+ m.getMTI() + "|" + m.getString(0));
+        log.info("TO CREATE ISO MESSAGE FOR ISW: "+ m.getMTI() + "|" + m.getString(0));
         m.set(2, "50022361608521");
         m.set(3, "392030");
         //String amount = String.format("%12s","75000100").replace(' ', '0');

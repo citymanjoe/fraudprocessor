@@ -11,7 +11,7 @@ public class RequestListener extends Log implements ISORequestListener {
     public boolean process(ISOSource source, ISOMsg reqMsg) {
 
         try {
-            info("ISW Request Header Code: " + reqMsg.getMTI() );
+            info("ISW Request Code: " + reqMsg.getMTI() );
             if (reqMsg.isResponse())
                 return false;
 
